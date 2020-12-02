@@ -23,7 +23,7 @@
     }
   },
   "dependencies": {
-    "@lerna/package-graph": "3.18.0",
+    "@lerna/package-graph": "3.18.5",
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
