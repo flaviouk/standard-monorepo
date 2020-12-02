@@ -1,6 +1,6 @@
 {
   "name": "standard-monorepo",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Flávio Carvalho",
   "license": "MIT",
   "main": "lib/index.js",
@@ -23,15 +23,20 @@
     }
   },
   "dependencies": {
+    "@lerna/package-graph": "3.18.0",
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
-    "inquirer": "^7.3.3"
+    "chalk": "4.1.0",
+    "inquirer": "^7.3.3",
+    "lodash": "^4.17.20",
+    "glob": "7.1.5"
   },
   "devDependencies": {
     "@oclif/dev-cli": "1.24.1",
     "@types/inquirer": "^7.3.1",
     "@types/jest": "^26.0.15",
+    "@types/lodash": "^4.14.165",
     "@types/node": "^10",
     "globby": "11.0.1",
     "husky": "^4.3.0",

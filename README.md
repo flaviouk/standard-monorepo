@@ -19,7 +19,7 @@ $ npm install -g standard-monorepo
 $ standard-monorepo COMMAND
 running command...
 $ standard-monorepo (-v|--version|version)
-standard-monorepo/0.1.0 darwin-x64 node-v10.15.2
+standard-monorepo/0.2.0 darwin-x64 node-v10.15.2
 $ standard-monorepo --help [COMMAND]
 USAGE
   $ standard-monorepo COMMAND
@@ -30,8 +30,28 @@ USAGE
 # Commands
 
 <!-- commands -->
+* [`standard-monorepo circular-deps`](#standard-monorepo-circular-deps)
 * [`standard-monorepo commit [COMMIT]`](#standard-monorepo-commit-commit)
 * [`standard-monorepo help [COMMAND]`](#standard-monorepo-help-command)
+* [`standard-monorepo list`](#standard-monorepo-list)
+
+## `standard-monorepo circular-deps`
+
+```
+USAGE
+  $ standard-monorepo circular-deps
+
+OPTIONS
+  -h, --help   show CLI help
+  --[no-]fail  fail if circular dependencies are found
+
+EXAMPLES
+  $ standard-monorepo circular-deps
+  $ standard-monorepo circular-deps --fail # This is the default
+  $ standard-monorepo circular-deps --no-fail
+```
+
+_See code: [src/commands/circular-deps.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.0/src/commands/circular-deps.ts)_
 
 ## `standard-monorepo commit [COMMIT]`
 
@@ -60,7 +80,7 @@ EXAMPLES
   }
 ```
 
-_See code: [src/commands/commit.ts](https://github.com/imflavio/standard-monorepo/blob/v0.1.0/src/commands/commit.ts)_
+_See code: [src/commands/commit.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.0/src/commands/commit.ts)_
 
 ## `standard-monorepo help [COMMAND]`
 
@@ -76,4 +96,20 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.0/src/commands/help.ts)_
+
+## `standard-monorepo list`
+
+```
+USAGE
+  $ standard-monorepo list
+
+OPTIONS
+  -h, --help  show CLI help
+
+EXAMPLES
+  $ standard-monorepo list
+  $ standard-monorepo list >> changed.json
+```
+
+_See code: [src/commands/list.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.0/src/commands/list.ts)_
 <!-- commandsstop -->
