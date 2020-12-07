@@ -41,7 +41,8 @@ export default class CircularDeps extends Command {
       const msg = `Found ${
         circDeps.length
       } circular dependencies in the project, please fix these as soon as possible.
-${circDeps.map((cycle) => cycle.join(' -> ')).join('\n')}`
+
+${circDeps.map((cycle) => cycle.join(' -> ')).join('\n\n')}`
 
       if (flags.fail && circDeps.length > flags.max) this.error('[FAIL] ' + msg)
       else this.log('[WARNING] ' + msg)

@@ -2,12 +2,15 @@
 
 exports[`[command:circular-deps] should detect circular dependencies 1`] = `
 "Error: [FAIL] Found 1 circular dependencies in the project, please fix these as soon as possible.
+
 d -> e -> f -> d"
 `;
 
 exports[`[command:circular-deps] should detect multiple circular dependencies 1`] = `
 "Error: [FAIL] Found 2 circular dependencies in the project, please fix these as soon as possible.
+
 a -> b -> c -> a
+
 d -> e -> f -> g -> d"
 `;
 
@@ -20,13 +23,16 @@ Array [
 
 exports[`[command:circular-deps] should fail if there are more circular dependencies than the maximum 1`] = `
 "Error: [FAIL] Found 2 circular dependencies in the project, please fix these as soon as possible.
+
 a -> b -> c -> a
+
 d -> e -> f -> g -> d"
 `;
 
 exports[`[command:circular-deps] should fail silently 1`] = `
 Array [
   "[WARNING] Found 1 circular dependencies in the project, please fix these as soon as possible.
+
 d -> e -> f -> d
 ",
 ]
@@ -35,7 +41,9 @@ d -> e -> f -> d
 exports[`[command:circular-deps] should pass if there are less circular dependencies than the maximum 1`] = `
 Array [
   "[WARNING] Found 2 circular dependencies in the project, please fix these as soon as possible.
+
 a -> b -> c -> a
+
 d -> e -> f -> g -> d
 ",
 ]
