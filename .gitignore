@@ -104,5 +104,4 @@ dist
 .tern-port
 oclif.manifest.json
 lib
-
-packages
+.idea

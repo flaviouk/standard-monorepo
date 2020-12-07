@@ -1,7 +1,4 @@
-import {
-  validateCommitWithScope,
-  validateCommitWithoutScope,
-} from '../src/commands/commit'
+import { validateCommitWithScope, validateCommitWithoutScope } from '../commit'
 
 describe('[validateCommitWithScope]', () => {
   it('Should be able to validate message based on type', () => {

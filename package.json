@@ -1,17 +1,17 @@
 {
   "name": "standard-monorepo",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Flávio Carvalho",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "engines": {
-    "node": ">=10"
-  },
+  "private": true,
   "bin": {
     "standard-monorepo": "./bin/run"
   },
   "scripts": {
+    "format:all": "prettier '**/*.{js,jsx,ts,tsx,json,css}' --write",
+    "format:check": "prettier '**/*.{js,jsx,ts,tsx,json,css}' --check",
     "build": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme && rm -f oclif.manifest.json",
     "test": "jest",
     "version": "oclif-dev readme && git add README.md"
@@ -23,14 +23,14 @@
     }
   },
   "dependencies": {
-    "@lerna/package-graph": "3.18.0",
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
     "chalk": "4.1.0",
+    "glob": "7.1.5",
     "inquirer": "^7.3.3",
     "lodash": "^4.17.20",
-    "glob": "7.1.5"
+    "semver": "^7.3.4"
   },
   "devDependencies": {
     "@oclif/dev-cli": "1.24.1",
@@ -66,10 +66,19 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
+  "jest": {
+    "automock": true
+  },
   "prettier": {
     "printWidth": 80,
     "semi": false,
     "singleQuote": true,
     "trailingComma": "all"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "volta": {
+    "node": "14.15.1"
   }
 }
