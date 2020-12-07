@@ -19,7 +19,7 @@ $ npm install -g standard-monorepo
 $ standard-monorepo COMMAND
 running command...
 $ standard-monorepo (-v|--version|version)
-standard-monorepo/0.2.1 darwin-x64 node-v14.15.1
+standard-monorepo/0.2.2 darwin-x64 node-v14.15.1
 $ standard-monorepo --help [COMMAND]
 USAGE
   $ standard-monorepo COMMAND
@@ -52,7 +52,7 @@ EXAMPLES
   $ standard-monorepo circular-deps --no-fail
 ```
 
-_See code: [src/commands/circular-deps.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.1/src/commands/circular-deps.ts)_
+_See code: [src/commands/circular-deps.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.2/src/commands/circular-deps.ts)_
 
 ## `standard-monorepo commit [COMMIT]`
 
@@ -81,7 +81,7 @@ EXAMPLES
   }
 ```
 
-_See code: [src/commands/commit.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.1/src/commands/commit.ts)_
+_See code: [src/commands/commit.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.2/src/commands/commit.ts)_
 
 ## `standard-monorepo help [COMMAND]`
 
@@ -116,5 +116,5 @@ EXAMPLES
   --only="name,version,private,location,dependencies,devDependencies,peerDependencies,optionalDependencies"
 ```
 
-_See code: [src/commands/list.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.1/src/commands/list.ts)_
+_See code: [src/commands/list.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.2/src/commands/list.ts)_
 <!-- commandsstop -->

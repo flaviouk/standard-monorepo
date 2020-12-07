@@ -8,7 +8,8 @@
     "strict": false,
     "target": "es2017",
     "jsx": "react",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "noUnusedLocals": true
   },
   "include": ["src/**/*"]
 }

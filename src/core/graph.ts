@@ -1,4 +1,4 @@
-import { fromPairs, isUndefined, last } from 'lodash'
+import { fromPairs, isUndefined, uniq } from 'lodash'
 import semver from 'semver'
 
 import { Package, Nodes } from './types'
@@ -32,7 +32,7 @@ export class Graph {
       if (dfsResult.length > 0) cycles.push(dfsResult)
     }
 
-    return cycles
+    return cycles.map((cycle) => [...uniq(cycle), cycle[0]])
   }
 
   private dfs = (current: string): Cycle => {
