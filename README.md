@@ -19,7 +19,7 @@ $ npm install -g standard-monorepo
 $ standard-monorepo COMMAND
 running command...
 $ standard-monorepo (-v|--version|version)
-standard-monorepo/0.2.0 darwin-x64 node-v10.15.2
+standard-monorepo/0.2.1 darwin-x64 node-v14.15.1
 $ standard-monorepo --help [COMMAND]
 USAGE
   $ standard-monorepo COMMAND
@@ -44,6 +44,7 @@ USAGE
 OPTIONS
   -h, --help   show CLI help
   --[no-]fail  fail if circular dependencies are found
+  --max=max    maximum allowed circular dependencies
 
 EXAMPLES
   $ standard-monorepo circular-deps
@@ -51,7 +52,7 @@ EXAMPLES
   $ standard-monorepo circular-deps --no-fail
 ```
 
-_See code: [src/commands/circular-deps.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.0/src/commands/circular-deps.ts)_
+_See code: [src/commands/circular-deps.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.1/src/commands/circular-deps.ts)_
 
 ## `standard-monorepo commit [COMMIT]`
 
@@ -80,7 +81,7 @@ EXAMPLES
   }
 ```
 
-_See code: [src/commands/commit.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.0/src/commands/commit.ts)_
+_See code: [src/commands/commit.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.1/src/commands/commit.ts)_
 
 ## `standard-monorepo help [COMMAND]`
 
@@ -104,12 +105,16 @@ USAGE
   $ standard-monorepo list
 
 OPTIONS
-  -h, --help  show CLI help
+  -h, --help   show CLI help
+  --only=only  [default: name,version,private,location] fields to return for each package
 
 EXAMPLES
   $ standard-monorepo list
-  $ standard-monorepo list >> changed.json
+  $ standard-monorepo list >> list.json
+  $ standard-monorepo list --only="name,version,private,location"
+  $ standard-monorepo list 
+  --only="name,version,private,location,dependencies,devDependencies,peerDependencies,optionalDependencies"
 ```
 
-_See code: [src/commands/list.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.0/src/commands/list.ts)_
+_See code: [src/commands/list.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.1/src/commands/list.ts)_
 <!-- commandsstop -->

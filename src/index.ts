@@ -1,2 +1,3 @@
 export { run } from '@oclif/command'
-export { getAllPackages, getCircularDependencies } from './core/packages'
+export { default as getAllPackages } from './core/allPackages'
+export { Graph } from './core/graph'

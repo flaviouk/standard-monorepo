@@ -1,6 +1,6 @@
 import { Command, flags } from '@oclif/command'
-import { red } from 'chalk'
-import { getCircularDependencies } from '../core/packages'
+import getAllPackages from '../core/allPackages'
+import { Graph } from '../core/graph'
 
 export default class CircularDeps extends Command {
   static description = 'List all the circular dependencies in the monorepo'
@@ -20,22 +20,31 @@ export default class CircularDeps extends Command {
       default: true,
       allowNo: true,
     }),
+    max: flags.integer({
+      description: 'maximum allowed circular dependencies',
+      default: 0,
+    }),
   }
 
   async run() {
     const { flags } = this.parse(CircularDeps)
 
-    const num = await getCircularDependencies(flags.fail)
+    const packages = await getAllPackages()
+    const graph = new Graph(packages)
+    const circDeps = graph.detectCycle()
 
-    if (num === 0) {
-      this.log('✅ No circular dependencies found in the project, good job!')
+    if (circDeps.length === 0) {
+      this.log(
+        '[SUCCESS] No circular dependencies found in the project, good job!',
+      )
     } else {
-      const msg = `Found ${red(
-        num,
-      )} circular dependencies in the project, please fix these as soon as possible.`
+      const msg = `Found ${
+        circDeps.length
+      } circular dependencies in the project, please fix these as soon as possible.
+${circDeps.map((cycle) => cycle.join(' -> ')).join('\n')}`
 
-      this.log(msg)
-      if (flags.fail) throw new Error('❌ Fail! ' + msg)
+      if (flags.fail && circDeps.length > flags.max) this.error('[FAIL] ' + msg)
+      else this.log('[WARNING] ' + msg)
     }
   }
 }

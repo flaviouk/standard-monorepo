@@ -1,23 +1,10 @@
-import { join } from 'path'
 import { defaultTo, flattenDeep } from 'lodash'
+import { join } from 'path'
 import Glob from 'glob'
-import PackageGraph from '@lerna/package-graph'
+
+import { Package, PackageJson } from './types'
 
 const root = process.cwd()
-
-interface Deps {
-  [dependencyName: string]: string
-}
-
-export interface Package {
-  name: string
-  version: string
-  private: boolean
-  location: string
-  dependencies: Deps
-  devDependencies: Deps
-  peerDependencies: Deps
-}
 
 const findByGlob = async (glob: string) =>
   new Promise<Package[]>((resolve, reject) => {
@@ -37,6 +24,7 @@ const findByGlob = async (glob: string) =>
               dependencies = {},
               devDependencies = {},
               peerDependencies = {},
+              optionalDependencies = {},
             } = require(location)
             if (!name) {
               throw Error('All packages must have a name: ' + location)
@@ -52,6 +40,7 @@ const findByGlob = async (glob: string) =>
               dependencies,
               devDependencies,
               peerDependencies,
+              optionalDependencies,
             }
           }),
         )
@@ -59,21 +48,37 @@ const findByGlob = async (glob: string) =>
     )
   })
 
-export const getAllPackages = async (): Promise<Package[]> => {
-  const pkg = require(join(root, 'package.json'))
-  const packagesGlobs = defaultTo(
+const getRootPackageJson = (): PackageJson =>
+  require(join(root, 'package.json'))
+
+const getAllPackages = async (): Promise<Package[]> => {
+  const pkg = getRootPackageJson()
+
+  const globs = defaultTo(
     Array.isArray(pkg.workspaces) ? pkg.workspaces : pkg.workspaces?.packages,
     [],
   )
-  return flattenDeep(await Promise.all(packagesGlobs.map(findByGlob)))
+  const packages = flattenDeep(await Promise.all(globs.map(findByGlob)))
+
+  const seen = new Map()
+
+  for (const { name, location } of packages) {
+    if (seen.has(name)) seen.get(name).push(location)
+    else seen.set(name, [location])
+  }
+
+  for (const [name, locations] of seen) {
+    if (locations.length > 1) {
+      throw new Error(
+        [
+          `Package name "${name}" used in multiple packages:`,
+          ...locations,
+        ].join('\n\t'),
+      )
+    }
+  }
+
+  return packages
 }
 
-export const getCircularDependencies = async (rejectCycles: boolean) => {
-  const packages = await getAllPackages()
-  const graph = new PackageGraph(packages)
-  const [cyclePaths, _cycleNodes]: [
-    Set<string[]>,
-    Set<object[]>,
-  ] = graph.partitionCycles(rejectCycles)
-  return cyclePaths.size
-}
+export default getAllPackages
