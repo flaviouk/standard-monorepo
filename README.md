@@ -7,9 +7,70 @@
 
 <!-- toc -->
 * [standard-monorepo](#standard-monorepo)
+* [Goal](#goal)
+* [Roadmap v1](#roadmap-v1)
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
+
+# Goal
+
+The goal is to create a library that will help you and your team manage js monorepos. We assume that you run github flow with rebase enabled and provide everything available in the CLI programatically.
+
+standard-monorepo should be all you need to run a js monorepo effectively, no need to setup commitlint, fiddle with lerna and optimise CI environments.
+
+# Roadmap v1
+
+- [x] [Conventional commits](https://www.conventionalcommits.org/)
+      Also supports a "--scope" flag and validates against a JIRA ticket number
+  - [x] Lint (Similar to [commitlint](https://github.com/conventional-changelog/commitlint), without the configuration)
+    ```sh-session
+    $ standard-monorepo commit "feat: did things"
+    > [SUCCESS] Commit message meets the conventional commit standard
+    ```
+    ```sh-session
+    $ standard-monorepo commit "did things"
+    ›   Error: [FAIL]
+    ›
+    ›   ####################################
+    ›   did things
+    ›   ####################################
+    ›
+    ›
+    ›   Make sure you follow the conventional commit format and provide the correct scope flag for your needs.
+    ```
+  - [x] Prompt (Similar to [commitizen](https://github.com/commitizen/cz-cli), without the configuration)
+- [x] Detect packages (yarn workspaces glob)
+- [x] Circular Dependencies
+
+  - [x] Find circular dependencies
+  - [x] "--max" and "--maxTotalPaths" flags to prevent addicional circular dependencies or paths being introduced (if below they will output warnings instead of a failure)
+
+  ```sh-session
+  $ standard-monorepo circular-deps --max=1 --maxTotalPaths=55
+
+  Found 2 circular dependencies in the project, please fix these as soon as possible.
+
+      |> Maximum circular dependencies allowed is 1 "--max", found: 2
+
+      |> Maximum circular dependencies *paths* allowed is 55 "--maxTotalPaths", found: 5
+
+      #######################################################################
+
+      |> foo ->
+          bar ->
+
+
+      |> a ->
+          b ->
+           c ->
+  ```
+
+- [ ] Print what packages have changed since a git ref (Similar to `lerna changed --since=main`), ideally using merge-base --fork-point as default
+- [ ] CI helpers (github actions / gitlab ci / circle ci / etc) so that we only build/test what has changed
+- [ ] Run command (Similar to `lerna exec "echo hello" --stream` and `lerna exec "echo hello" --parallel`)
+- [ ] Watch command (Something that doesn't exist in the ecosystem at the moment)
+- [ ] Publish (Similar to `lerna publish --conventional-commits`)
 
 # Usage
 
@@ -19,7 +80,7 @@ $ npm install -g standard-monorepo
 $ standard-monorepo COMMAND
 running command...
 $ standard-monorepo (-v|--version|version)
-standard-monorepo/0.3.0 darwin-x64 node-v14.15.1
+standard-monorepo/0.3.1 darwin-x64 node-v14.15.1
 $ standard-monorepo --help [COMMAND]
 USAGE
   $ standard-monorepo COMMAND
@@ -51,7 +112,7 @@ EXAMPLES
   $ standard-monorepo circular-deps --max=5 --maxTotalPaths=10 # default is 0 for both
 ```
 
-_See code: [src/commands/circular-deps.ts](https://github.com/imflavio/standard-monorepo/blob/v0.3.0/src/commands/circular-deps.ts)_
+_See code: [src/commands/circular-deps.ts](https://github.com/imflavio/standard-monorepo/blob/v0.3.1/src/commands/circular-deps.ts)_
 
 ## `standard-monorepo commit [COMMIT]`
 
@@ -80,7 +141,7 @@ EXAMPLES
   }
 ```
 
-_See code: [src/commands/commit.ts](https://github.com/imflavio/standard-monorepo/blob/v0.3.0/src/commands/commit.ts)_
+_See code: [src/commands/commit.ts](https://github.com/imflavio/standard-monorepo/blob/v0.3.1/src/commands/commit.ts)_
 
 ## `standard-monorepo help [COMMAND]`
 
@@ -115,5 +176,5 @@ EXAMPLES
   --only="name,version,private,location,dependencies,devDependencies,peerDependencies,optionalDependencies"
 ```
 
-_See code: [src/commands/list.ts](https://github.com/imflavio/standard-monorepo/blob/v0.3.0/src/commands/list.ts)_
+_See code: [src/commands/list.ts](https://github.com/imflavio/standard-monorepo/blob/v0.3.1/src/commands/list.ts)_
 <!-- commandsstop -->
