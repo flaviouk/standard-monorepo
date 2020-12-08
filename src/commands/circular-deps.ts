@@ -1,27 +1,26 @@
 import { Command, flags } from '@oclif/command'
 import getAllPackages from '../core/allPackages'
 import { Graph } from '../core/graph'
+import { padMessage, getCircularDepsMessage } from '../core/message'
 
 export default class CircularDeps extends Command {
   static description = 'List all the circular dependencies in the monorepo'
 
   static examples = [
     '$ standard-monorepo circular-deps',
-    '$ standard-monorepo circular-deps --fail # This is the default',
-    '$ standard-monorepo circular-deps --no-fail',
+    '$ standard-monorepo circular-deps --max=5 --maxTotalPaths=10 # default is 0 for both',
   ]
 
   static args = []
 
   static flags = {
     help: flags.help({ char: 'h' }),
-    fail: flags.boolean({
-      description: 'fail if circular dependencies are found',
-      default: true,
-      allowNo: true,
-    }),
     max: flags.integer({
-      description: 'maximum allowed circular dependencies',
+      description: 'maximum allowed individual circular dependencies',
+      default: 0,
+    }),
+    maxTotalPaths: flags.integer({
+      description: 'maximum allowed circular dependencies paths',
       default: 0,
     }),
   }
@@ -32,20 +31,9 @@ export default class CircularDeps extends Command {
     const packages = await getAllPackages()
     const graph = new Graph(packages)
     const circDeps = graph.detectCycle()
+    const message = getCircularDepsMessage(circDeps, flags)
 
-    if (circDeps.length === 0) {
-      this.log(
-        '[SUCCESS] No circular dependencies found in the project, good job!',
-      )
-    } else {
-      const msg = `Found ${
-        circDeps.length
-      } circular dependencies in the project, please fix these as soon as possible.
-
-${circDeps.map((cycle) => cycle.join(' -> ')).join('\n\n')}`
-
-      if (flags.fail && circDeps.length > flags.max) this.error('[FAIL] ' + msg)
-      else this.log('[WARNING] ' + msg)
-    }
+    const handler = message.type === 'fail' ? this.error : this.log
+    handler(padMessage(message))
   }
 }

@@ -1,10 +1,7 @@
-import { fromPairs, isUndefined, uniq } from 'lodash'
+import { fromPairs, isUndefined, uniq, isEmpty } from 'lodash'
 import semver from 'semver'
 
-import { Package, Nodes } from './types'
-
-type CycleSet = Set<string>
-type Cycle = string[]
+import { Package, Nodes, CycleSet, Cycle } from './types'
 
 // https://www.youtube.com/watch?v=rKQaZuoUR4M&feature=youtu.be
 export class Graph {
@@ -95,21 +92,22 @@ export class Graph {
       dependencies,
       devDependencies,
     } of packages) {
-      Object.entries(dependencies).forEach(([name, versionRange]) => {
+      const handler = ([name, versionRange]) => {
         if (isLocalDependency(name, versionRange)) {
           nodes[packageName].links.push(name)
         }
-      })
+      }
 
-      Object.entries(devDependencies).forEach(([name, versionRange]) => {
-        if (isLocalDependency(name, versionRange)) {
-          nodes[name].links.push(name)
-        }
-      })
+      if (!isEmpty(dependencies)) Object.entries(dependencies).forEach(handler)
+      if (!isEmpty(devDependencies))
+        Object.entries(devDependencies).forEach(handler)
     }
 
     return fromPairs(
-      Object.entries(nodes).map(([name, { links }]) => [name, links]),
+      Object.entries(nodes).map(([name, { links }]) => [
+        name,
+        uniq(links).filter((link) => link !== name),
+      ]),
     )
   }
 }

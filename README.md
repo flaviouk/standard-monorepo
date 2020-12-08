@@ -19,7 +19,7 @@ $ npm install -g standard-monorepo
 $ standard-monorepo COMMAND
 running command...
 $ standard-monorepo (-v|--version|version)
-standard-monorepo/0.2.3 darwin-x64 node-v14.15.1
+standard-monorepo/0.3.0 darwin-x64 node-v14.15.1
 $ standard-monorepo --help [COMMAND]
 USAGE
   $ standard-monorepo COMMAND
@@ -42,17 +42,16 @@ USAGE
   $ standard-monorepo circular-deps
 
 OPTIONS
-  -h, --help   show CLI help
-  --[no-]fail  fail if circular dependencies are found
-  --max=max    maximum allowed circular dependencies
+  -h, --help                     show CLI help
+  --max=max                      maximum allowed individual circular dependencies
+  --maxTotalPaths=maxTotalPaths  maximum allowed circular dependencies paths
 
 EXAMPLES
   $ standard-monorepo circular-deps
-  $ standard-monorepo circular-deps --fail # This is the default
-  $ standard-monorepo circular-deps --no-fail
+  $ standard-monorepo circular-deps --max=5 --maxTotalPaths=10 # default is 0 for both
 ```
 
-_See code: [src/commands/circular-deps.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.3/src/commands/circular-deps.ts)_
+_See code: [src/commands/circular-deps.ts](https://github.com/imflavio/standard-monorepo/blob/v0.3.0/src/commands/circular-deps.ts)_
 
 ## `standard-monorepo commit [COMMIT]`
 
@@ -81,7 +80,7 @@ EXAMPLES
   }
 ```
 
-_See code: [src/commands/commit.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.3/src/commands/commit.ts)_
+_See code: [src/commands/commit.ts](https://github.com/imflavio/standard-monorepo/blob/v0.3.0/src/commands/commit.ts)_
 
 ## `standard-monorepo help [COMMAND]`
 
@@ -116,5 +115,5 @@ EXAMPLES
   --only="name,version,private,location,dependencies,devDependencies,peerDependencies,optionalDependencies"
 ```
 
-_See code: [src/commands/list.ts](https://github.com/imflavio/standard-monorepo/blob/v0.2.3/src/commands/list.ts)_
+_See code: [src/commands/list.ts](https://github.com/imflavio/standard-monorepo/blob/v0.3.0/src/commands/list.ts)_
 <!-- commandsstop -->

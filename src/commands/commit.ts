@@ -2,6 +2,7 @@ import util from 'util'
 import fs from 'fs'
 import { Command, flags } from '@oclif/command'
 import * as inquirer from 'inquirer'
+import { padMessage } from '../core/message'
 
 const readFile = util.promisify(fs.readFile)
 
@@ -119,16 +120,26 @@ export default class Commit extends Command {
       ? validateCommitWithScope(args.commit)
       : validateCommitWithoutScope(args.commit)
 
-    if (isValid) this.log('✅ Success!')
+    if (isValid)
+      this.log(
+        padMessage({
+          type: 'success',
+          text: 'Commit message meets the conventional commit standard',
+        }),
+      )
     else {
-      throw new Error(
-        `❌ Fail!
-
-####################################
-${args.commit}
-####################################
-
-Make sure you follow the conventional commit format and provide the correct scope flag for your needs.`,
+      this.error(
+        padMessage({
+          type: 'fail',
+          text: [
+            '\n',
+            '####################################',
+            args.commit,
+            '####################################',
+            '\n',
+            'Make sure you follow the conventional commit format and provide the correct scope flag for your needs.',
+          ].join('\n'),
+        }),
       )
     }
   }

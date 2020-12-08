@@ -25,3 +25,12 @@ export interface PackageJson extends Omit<Package, 'location'> {
 export interface Nodes {
   [node: string]: string[]
 }
+
+export type CycleSet = Set<string>
+
+export type Cycle = string[]
+
+export interface Message {
+  type: 'success' | 'warning' | 'fail'
+  text: string
+}
