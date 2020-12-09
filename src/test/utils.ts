@@ -26,7 +26,7 @@ export const createDep = (name: string, links: string[]) =>
 
 export const graphs = {
   NO_CYCLE: [
-    createDep('@foo/a', ['@foo/b', 'react']),
+    createDep('@foo/a', ['react']),
     createDep('@foo/b', ['@foo/a', '@foo/c', 'redux']),
     createDep('@foo/c', ['foo', 'bar', '@foo/d']),
     createDep('@foo/d', ['foo', 'bar', '@foo/e']),

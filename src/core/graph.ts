@@ -13,6 +13,7 @@ export class Graph {
   private unvisited: CycleSet = new Set()
   private visiting: CycleSet = new Set()
   private visited: CycleSet = new Set()
+  private cycles: Cycle[]
 
   constructor(packages: Package[]) {
     this.intialiseNodes = this.intialiseNodes.bind(this)
@@ -22,7 +23,10 @@ export class Graph {
   }
 
   detectCycle = (): Cycle[] => {
-    this.reset()
+    // We already calculated before, no need to do it again
+    if (!isUndefined(this.cycles)) return this.cycles
+
+    Object.keys(this.nodes).map((node) => this.unvisited.add(node))
 
     const cycles: Cycle[] = []
 
@@ -35,7 +39,8 @@ export class Graph {
       if (dfsResult.length > 0) cycles.push(dfsResult)
     }
 
-    return cycles.map((cycle) => [...uniq(cycle), cycle[0]])
+    this.cycles = cycles.map((cycle) => [...uniq(cycle), cycle[0]])
+    return this.cycles
   }
 
   private dfs = (current: string): Cycle => {
@@ -64,14 +69,6 @@ export class Graph {
 
     this.moveVertex(current, this.visiting, this.visited)
     return cycle.length === 1 ? [] : cycle
-  }
-
-  private reset = () => {
-    this.unvisited.clear()
-    this.visiting.clear()
-    this.visited.clear()
-
-    Object.keys(this.nodes).map((node) => this.unvisited.add(node))
   }
 
   private moveVertex = (
@@ -118,8 +115,14 @@ export class Graph {
   }
 
   getChangedPackages = (filesChanged: string[]): Package[] => {
+    const cycles = this.detectCycle()
+    // Can't accurately decide which packages have changed if there are circular dependencies
+    if (cycles.length > 0) return this.packages
+
     const packagesChanged = new Set<string>()
 
+    // For every file changed, loop through the package list and see if
+    // it's located inside, if it is add it to the list and exit the loop
     filesChanged.forEach((file) => {
       for (const { name, location } of this.packages) {
         if (file.startsWith(location.replace('/package.json', ''))) {
@@ -128,9 +131,14 @@ export class Graph {
       }
     })
 
-    packagesChanged.forEach((pkg) =>
-      this.nodes[pkg].map((link) => packagesChanged.add(link)),
-    )
+    // For every initially changed package, look at which packages depend
+    // on them and add them to the list too, as packagesChanged get updated
+    // it keeps running, until it has looped through everything in the set
+    packagesChanged.forEach((pkg) => {
+      Object.entries(this.nodes).forEach(
+        ([name, links]) => links.includes(pkg) && packagesChanged.add(name),
+      )
+    })
 
     return Array.from(packagesChanged).map(
       (changed) => this.packageList[changed],

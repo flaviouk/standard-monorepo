@@ -6,7 +6,7 @@ describe('[Graph]', () => {
     const graph = new Graph(graphs.NO_CYCLE)
 
     expect(graph.nodes).toEqual({
-      '@foo/a': ['@foo/b'],
+      '@foo/a': [],
       '@foo/b': ['@foo/a', '@foo/c'],
       '@foo/c': ['@foo/d'],
       '@foo/d': ['@foo/e'],
@@ -86,6 +86,19 @@ describe('[Graph]', () => {
     const graph = new Graph(graphs.NO_CYCLE)
 
     expect(
+      graph
+        .getChangedPackages([
+          '/packages/@foo/e/somefile.txt',
+          '/randomfile.txt',
+        ])
+        .map(({ name }) => name),
+    ).toEqual(['@foo/e', '@foo/d', '@foo/c', '@foo/b'])
+  })
+
+  it('should return all packages if theres at least one circular dependency', () => {
+    const graph = new Graph(graphs.ONE_CYCLE)
+
+    expect(
       graph.getChangedPackages([
         '/packages/@foo/b/somefile.txt',
         '/randomfile.txt',
@@ -94,13 +107,12 @@ describe('[Graph]', () => {
       Array [
         Object {
           "dependencies": Object {
-            "@foo/a": "1.0.0",
-            "@foo/c": "1.0.0",
-            "redux": "1.0.0",
+            "b": "1.0.0",
+            "c": "1.0.0",
           },
           "devDependencies": Object {},
-          "location": "/packages/@foo/b/package.json",
-          "name": "@foo/b",
+          "location": "/packages/a/package.json",
+          "name": "a",
           "optionalDependencies": Object {},
           "peerDependencies": Object {},
           "private": false,
@@ -108,12 +120,21 @@ describe('[Graph]', () => {
         },
         Object {
           "dependencies": Object {
-            "@foo/b": "1.0.0",
-            "react": "1.0.0",
+            "c": "1.0.0",
           },
           "devDependencies": Object {},
-          "location": "/packages/@foo/a/package.json",
-          "name": "@foo/a",
+          "location": "/packages/b/package.json",
+          "name": "b",
+          "optionalDependencies": Object {},
+          "peerDependencies": Object {},
+          "private": false,
+          "version": "1.0.0",
+        },
+        Object {
+          "dependencies": Object {},
+          "devDependencies": Object {},
+          "location": "/packages/c/package.json",
+          "name": "c",
           "optionalDependencies": Object {},
           "peerDependencies": Object {},
           "private": false,
@@ -121,13 +142,12 @@ describe('[Graph]', () => {
         },
         Object {
           "dependencies": Object {
-            "@foo/d": "1.0.0",
-            "bar": "1.0.0",
-            "foo": "1.0.0",
+            "a": "1.0.0",
+            "e": "1.0.0",
           },
           "devDependencies": Object {},
-          "location": "/packages/@foo/c/package.json",
-          "name": "@foo/c",
+          "location": "/packages/d/package.json",
+          "name": "d",
           "optionalDependencies": Object {},
           "peerDependencies": Object {},
           "private": false,
@@ -135,13 +155,11 @@ describe('[Graph]', () => {
         },
         Object {
           "dependencies": Object {
-            "@foo/e": "1.0.0",
-            "bar": "1.0.0",
-            "foo": "1.0.0",
+            "f": "1.0.0",
           },
           "devDependencies": Object {},
-          "location": "/packages/@foo/d/package.json",
-          "name": "@foo/d",
+          "location": "/packages/e/package.json",
+          "name": "e",
           "optionalDependencies": Object {},
           "peerDependencies": Object {},
           "private": false,
@@ -149,12 +167,11 @@ describe('[Graph]', () => {
         },
         Object {
           "dependencies": Object {
-            "bar": "1.0.0",
-            "foo": "1.0.0",
+            "d": "1.0.0",
           },
           "devDependencies": Object {},
-          "location": "/packages/@foo/e/package.json",
-          "name": "@foo/e",
+          "location": "/packages/f/package.json",
+          "name": "f",
           "optionalDependencies": Object {},
           "peerDependencies": Object {},
           "private": false,
