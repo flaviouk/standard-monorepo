@@ -5,6 +5,10 @@ import { Package, Nodes, CycleSet, Cycle } from './types'
 
 // https://www.youtube.com/watch?v=rKQaZuoUR4M&feature=youtu.be
 export class Graph {
+  packages: Package[]
+  packageList: {
+    [packageName: string]: Package
+  }
   nodes: Nodes
   private unvisited: CycleSet = new Set()
   private visiting: CycleSet = new Set()
@@ -12,6 +16,8 @@ export class Graph {
 
   constructor(packages: Package[]) {
     this.intialiseNodes = this.intialiseNodes.bind(this)
+    this.packages = packages
+    this.packageList = fromPairs(packages.map((pkg) => [pkg.name, pkg]))
     this.nodes = this.intialiseNodes(packages)
   }
 
@@ -108,6 +114,26 @@ export class Graph {
         name,
         uniq(links).filter((link) => link !== name),
       ]),
+    )
+  }
+
+  getChangedPackages = (filesChanged: string[]): Package[] => {
+    const packagesChanged = new Set<string>()
+
+    filesChanged.forEach((file) => {
+      for (const { name, location } of this.packages) {
+        if (file.startsWith(location.replace('/package.json', ''))) {
+          return packagesChanged.add(name)
+        }
+      }
+    })
+
+    packagesChanged.forEach((pkg) =>
+      this.nodes[pkg].map((link) => packagesChanged.add(link)),
+    )
+
+    return Array.from(packagesChanged).map(
+      (changed) => this.packageList[changed],
     )
   }
 }
