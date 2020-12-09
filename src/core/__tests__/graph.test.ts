@@ -8,7 +8,9 @@ describe('[Graph]', () => {
     expect(graph.nodes).toEqual({
       '@foo/a': ['@foo/b'],
       '@foo/b': ['@foo/a', '@foo/c'],
-      '@foo/c': [],
+      '@foo/c': ['@foo/d'],
+      '@foo/d': ['@foo/e'],
+      '@foo/e': [],
     })
   })
 
@@ -78,5 +80,87 @@ describe('[Graph]', () => {
         '@foo/3',
       ],
     ])
+  })
+
+  it('should detect changed packages', () => {
+    const graph = new Graph(graphs.NO_CYCLE)
+
+    expect(
+      graph.getChangedPackages([
+        '/packages/@foo/b/somefile.txt',
+        '/randomfile.txt',
+      ]),
+    ).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "dependencies": Object {
+            "@foo/a": "1.0.0",
+            "@foo/c": "1.0.0",
+            "redux": "1.0.0",
+          },
+          "devDependencies": Object {},
+          "location": "/packages/@foo/b/package.json",
+          "name": "@foo/b",
+          "optionalDependencies": Object {},
+          "peerDependencies": Object {},
+          "private": false,
+          "version": "1.0.0",
+        },
+        Object {
+          "dependencies": Object {
+            "@foo/b": "1.0.0",
+            "react": "1.0.0",
+          },
+          "devDependencies": Object {},
+          "location": "/packages/@foo/a/package.json",
+          "name": "@foo/a",
+          "optionalDependencies": Object {},
+          "peerDependencies": Object {},
+          "private": false,
+          "version": "1.0.0",
+        },
+        Object {
+          "dependencies": Object {
+            "@foo/d": "1.0.0",
+            "bar": "1.0.0",
+            "foo": "1.0.0",
+          },
+          "devDependencies": Object {},
+          "location": "/packages/@foo/c/package.json",
+          "name": "@foo/c",
+          "optionalDependencies": Object {},
+          "peerDependencies": Object {},
+          "private": false,
+          "version": "1.0.0",
+        },
+        Object {
+          "dependencies": Object {
+            "@foo/e": "1.0.0",
+            "bar": "1.0.0",
+            "foo": "1.0.0",
+          },
+          "devDependencies": Object {},
+          "location": "/packages/@foo/d/package.json",
+          "name": "@foo/d",
+          "optionalDependencies": Object {},
+          "peerDependencies": Object {},
+          "private": false,
+          "version": "1.0.0",
+        },
+        Object {
+          "dependencies": Object {
+            "bar": "1.0.0",
+            "foo": "1.0.0",
+          },
+          "devDependencies": Object {},
+          "location": "/packages/@foo/e/package.json",
+          "name": "@foo/e",
+          "optionalDependencies": Object {},
+          "peerDependencies": Object {},
+          "private": false,
+          "version": "1.0.0",
+        },
+      ]
+    `)
   })
 })

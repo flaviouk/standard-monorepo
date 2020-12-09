@@ -1,6 +1,6 @@
 {
   "name": "standard-monorepo",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "author": "Flávio Carvalho",
   "license": "MIT",
   "main": "lib/index.js",
@@ -26,6 +26,7 @@
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
     "chalk": "4.1.0",
+    "execa": "^5.0.0",
     "glob": "7.1.5",
     "inquirer": "^7.3.3",
     "lodash": "^4.17.20",

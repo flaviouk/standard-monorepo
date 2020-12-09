@@ -1,5 +1,5 @@
-import { repeat, isUndefined, flattenDeep } from 'lodash'
-import { Cycle, Message } from './types'
+import { repeat, isUndefined, flattenDeep, pick } from 'lodash'
+import { Cycle, Message, Package, Nodes } from './types'
 
 export const padMessage = (message: Message) => {
   switch (message.type) {
@@ -74,3 +74,17 @@ export const getCircularDepsMessage = (
       .join('\n\n'),
   }
 }
+
+export const printPackages = (
+  packages: Package[],
+  onlyFlag: string,
+): Message => ({
+  type: 'success',
+  text: JSON.stringify(
+    packages.map((pkg) => pick(pkg, onlyFlag.split(','))),
+    null,
+    2,
+  ),
+})
+
+export const printNodes = (nodes: Nodes) => JSON.stringify(nodes, null, 2)

@@ -1,7 +1,8 @@
 import { Command, flags } from '@oclif/command'
-import { pick } from 'lodash'
 import getAllPackages from '../core/allPackages'
-import { Package } from '../core/types'
+import getChangedFiles from '../core/changedFiles'
+import { printPackages, printNodes } from '../core/message'
+import { Graph } from '../core/graph'
 
 export default class List extends Command {
   static description = 'List all the packages in the monorepo as json'
@@ -11,15 +12,31 @@ export default class List extends Command {
     '$ standard-monorepo list >> list.json',
     '$ standard-monorepo list --only="name,version,private,location"',
     '$ standard-monorepo list --only="name,version,private,location,dependencies,devDependencies,peerDependencies,optionalDependencies"',
+    '$ standard-monorepo list --nodes # Shows all packages and their dependencies in an indexed table',
+    '$ standard-monorepo list --since=$gitsha --only=name,version',
+    '$ standard-monorepo list --since=$(git merge-base --fork-point main) --only=name,version',
+    '$ standard-monorepo list --since=main --forkPoint --only=name,version # same as above',
   ]
 
   static args = []
 
   static flags = {
     help: flags.help({ char: 'h' }),
+    nodes: flags.boolean({
+      description: 'list a representation of the dependency graph',
+      exclusive: ['only', 'since'],
+    }),
     only: flags.string({
       description: 'fields to return for each package',
       default: 'name,version,private,location',
+    }),
+    since: flags.string({
+      description: 'list all packages that have changed since a git ref',
+      default: 'main',
+    }),
+    forkPoint: flags.boolean({
+      description:
+        'list all packages that have changed since a fork point, using "git merge-base --fork-point $YOUR_REF"',
     }),
   }
 
@@ -27,15 +44,16 @@ export default class List extends Command {
     const { flags } = this.parse(List)
     const packages = await getAllPackages()
 
-    const print = (packages: Package[]) =>
-      this.log(
-        JSON.stringify(
-          packages.map((pkg) => pick(pkg, flags.only.split(','))),
-          null,
-          2,
-        ),
-      )
-
-    return print(packages)
+    if (flags.nodes) {
+      const graph = new Graph(packages)
+      this.log(printNodes(graph.nodes))
+    } else if (flags.since) {
+      const filesChanged = await getChangedFiles(flags.since, flags.forkPoint)
+      const graph = new Graph(packages)
+      const changedPackages = graph.getChangedPackages(filesChanged)
+      this.log(printPackages(changedPackages, flags.only).text)
+    } else {
+      this.log(printPackages(packages, flags.only).text)
+    }
   }
 }

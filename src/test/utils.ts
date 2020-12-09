@@ -11,7 +11,7 @@ export const createPackage = ({
   name,
   version,
   private: false,
-  location: `/packages/${name}`,
+  location: `/packages/${name}/package.json`,
   dependencies,
   devDependencies,
   peerDependencies: {},
@@ -28,7 +28,9 @@ export const graphs = {
   NO_CYCLE: [
     createDep('@foo/a', ['@foo/b', 'react']),
     createDep('@foo/b', ['@foo/a', '@foo/c', 'redux']),
-    createDep('@foo/c', ['foo', 'bar']),
+    createDep('@foo/c', ['foo', 'bar', '@foo/d']),
+    createDep('@foo/d', ['foo', 'bar', '@foo/e']),
+    createDep('@foo/e', ['foo', 'bar']),
   ],
   ONE_CYCLE: [
     createDep('a', ['b', 'c']),
