@@ -20,7 +20,7 @@ export default class List extends Command {
     ]),
     '$ standard-monorepo list --only="name,version,private,location,dependencies,devDependencies,peerDependencies,optionalDependencies"',
     '$ standard-monorepo list --nodes # Shows all packages and their dependencies in an indexed table',
-    '$ standard-monorepo list --since=gitsha --only=name,version',
+    '$ standard-monorepo list --since=gitsha --only=name,version --no-forkPoint',
     '$ standard-monorepo list --since=$(git merge-base --fork-point main)',
     '$ standard-monorepo list --since=main --forkPoint # same as above',
     '$ standard-monorepo list --since=main # same as above as --forkPoint default is true',
@@ -45,6 +45,7 @@ export default class List extends Command {
       description:
         'list all packages that have changed since a fork point, using "git merge-base --fork-point $YOUR_REF"',
       default: true,
+      allowNo: true,
     }),
   }
 

@@ -80,7 +80,7 @@ $ npm install -g standard-monorepo
 $ standard-monorepo COMMAND
 running command...
 $ standard-monorepo (-v|--version|version)
-standard-monorepo/0.4.1 darwin-x64 node-v14.15.1
+standard-monorepo/0.4.2 darwin-x64 node-v14.15.1
 $ standard-monorepo --help [COMMAND]
 USAGE
   $ standard-monorepo COMMAND
@@ -112,7 +112,7 @@ EXAMPLES
   $ standard-monorepo circular-deps --max=5 --maxTotalPaths=10 # default is 0 for both
 ```
 
-_See code: [src/commands/circular-deps.ts](https://github.com/imflavio/standard-monorepo/blob/v0.4.1/src/commands/circular-deps.ts)_
+_See code: [src/commands/circular-deps.ts](https://github.com/imflavio/standard-monorepo/blob/v0.4.2/src/commands/circular-deps.ts)_
 
 ## `standard-monorepo commit [COMMIT]`
 
@@ -141,7 +141,7 @@ EXAMPLES
   }
 ```
 
-_See code: [src/commands/commit.ts](https://github.com/imflavio/standard-monorepo/blob/v0.4.1/src/commands/commit.ts)_
+_See code: [src/commands/commit.ts](https://github.com/imflavio/standard-monorepo/blob/v0.4.2/src/commands/commit.ts)_
 
 ## `standard-monorepo help [COMMAND]`
 
@@ -165,11 +165,16 @@ USAGE
   $ standard-monorepo list
 
 OPTIONS
-  -h, --help     show CLI help
-  --forkPoint    list all packages that have changed since a fork point, using "git merge-base --fork-point $YOUR_REF"
-  --nodes        list a representation of the dependency graph
-  --only=only    [default: name,version,private,location] fields to return for each package
-  --since=since  list all packages that have changed since a git ref
+  -h, --help        show CLI help
+
+  --[no-]forkPoint  list all packages that have changed since a fork point, using "git merge-base --fork-point
+                    $YOUR_REF"
+
+  --nodes           list a representation of the dependency graph
+
+  --only=only       [default: name,version,private,location] fields to return for each package
+
+  --since=since     list all packages that have changed since a git ref
 
 EXAMPLES
   $ standard-monorepo list
@@ -192,11 +197,11 @@ EXAMPLES
   $ standard-monorepo list 
   --only="name,version,private,location,dependencies,devDependencies,peerDependencies,optionalDependencies"
   $ standard-monorepo list --nodes # Shows all packages and their dependencies in an indexed table
-  $ standard-monorepo list --since=gitsha --only=name,version
+  $ standard-monorepo list --since=gitsha --only=name,version --no-forkPoint
   $ standard-monorepo list --since=$(git merge-base --fork-point main)
   $ standard-monorepo list --since=main --forkPoint # same as above
   $ standard-monorepo list --since=main # same as above as --forkPoint default is true
 ```
 
-_See code: [src/commands/list.ts](https://github.com/imflavio/standard-monorepo/blob/v0.4.1/src/commands/list.ts)_
+_See code: [src/commands/list.ts](https://github.com/imflavio/standard-monorepo/blob/v0.4.2/src/commands/list.ts)_
 <!-- commandsstop -->
