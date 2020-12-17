@@ -8,7 +8,7 @@ export default class CircularDeps extends Command {
 
   static examples = [
     '$ standard-monorepo circular-deps',
-    '$ standard-monorepo circular-deps --max=5 --maxTotalPaths=10 # default is 0 for both',
+    '$ standard-monorepo circular-deps --max=5 --max-total-paths=10 # default is 0 for both',
   ]
 
   static args = []
@@ -19,7 +19,7 @@ export default class CircularDeps extends Command {
       description: 'maximum allowed individual circular dependencies',
       default: 0,
     }),
-    maxTotalPaths: flags.integer({
+    'max-total-paths': flags.integer({
       description: 'maximum allowed circular dependencies paths',
       default: 0,
     }),

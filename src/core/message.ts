@@ -14,7 +14,7 @@ export const padMessage = (message: Message) => {
 
 interface CircDepsFlags {
   max: number
-  maxTotalPaths: number
+  'max-total-paths': number
 }
 
 export const getCircularDepsMessage = (
@@ -29,14 +29,14 @@ export const getCircularDepsMessage = (
   }
 
   const isMaxSet = !isUndefined(flags.max)
-  const isMaxPathsSet = !isUndefined(flags.maxTotalPaths)
+  const isMaxPathsSet = !isUndefined(flags['max-total-paths'])
 
   const total = circDeps.length
   const totalPaths = flattenDeep(circDeps).length
 
   const isUnderMax = Boolean(isMaxSet && total <= flags.max)
   const isUnderMaxPaths = Boolean(
-    isMaxPathsSet && totalPaths <= flags.maxTotalPaths,
+    isMaxPathsSet && totalPaths <= flags['max-total-paths'],
   )
 
   const getCircDepsMessages = () =>
@@ -63,8 +63,8 @@ export const getCircularDepsMessage = (
       ].join(''),
       [
         '|> Maximum circular dependencies *paths* allowed is ',
-        flags.maxTotalPaths,
-        ' "--maxTotalPaths", found: ',
+        flags['max-total-paths'],
+        ' "--max-total-paths", found: ',
         totalPaths,
       ].join(''),
       '#######################################################################',

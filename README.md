@@ -44,16 +44,16 @@ standard-monorepo should be all you need to run a js monorepo effectively, no ne
 - [x] Circular Dependencies
 
   - [x] Find circular dependencies
-  - [x] "--max" and "--maxTotalPaths" flags to prevent addicional circular dependencies or paths being introduced (if below they will output warnings instead of a failure)
+  - [x] "--max" and "--max-total-paths" flags to prevent addicional circular dependencies or paths being introduced (if below they will output warnings instead of a failure)
 
   ```sh-session
-  $ standard-monorepo circular-deps --max=1 --maxTotalPaths=55
+  $ standard-monorepo circular-deps --max=1 --max-total-paths=55
 
   Found 2 circular dependencies in the project, please fix these as soon as possible.
 
       |> Maximum circular dependencies allowed is 1 "--max", found: 2
 
-      |> Maximum circular dependencies *paths* allowed is 55 "--maxTotalPaths", found: 5
+      |> Maximum circular dependencies *paths* allowed is 55 "--max-total-paths", found: 5
 
       #######################################################################
 
@@ -103,13 +103,13 @@ USAGE
   $ standard-monorepo circular-deps
 
 OPTIONS
-  -h, --help                     show CLI help
-  --max=max                      maximum allowed individual circular dependencies
-  --maxTotalPaths=maxTotalPaths  maximum allowed circular dependencies paths
+  -h, --help                         show CLI help
+  --max=max                          maximum allowed individual circular dependencies
+  --max-total-paths=max-total-paths  maximum allowed circular dependencies paths
 
 EXAMPLES
   $ standard-monorepo circular-deps
-  $ standard-monorepo circular-deps --max=5 --maxTotalPaths=10 # default is 0 for both
+  $ standard-monorepo circular-deps --max=5 --max-total-paths=10 # default is 0 for both
 ```
 
 _See code: [src/commands/circular-deps.ts](https://github.com/imflavio/standard-monorepo/blob/v0.4.2/src/commands/circular-deps.ts)_
@@ -165,16 +165,16 @@ USAGE
   $ standard-monorepo list
 
 OPTIONS
-  -h, --help        show CLI help
+  -h, --help         show CLI help
 
-  --[no-]forkPoint  list all packages that have changed since a fork point, using "git merge-base --fork-point
-                    $YOUR_REF"
+  --[no-]fork-point  list all packages that have changed since a fork point, using "git merge-base --fork-point
+                     $YOUR_REF"
 
-  --nodes           list a representation of the dependency graph
+  --nodes            list a representation of the dependency graph
 
-  --only=only       [default: name,version,private,location] fields to return for each package
+  --only=only        [default: name,version,private,location] fields to return for each package
 
-  --since=since     list all packages that have changed since a git ref
+  --since=since      list all packages that have changed since a git ref
 
 EXAMPLES
   $ standard-monorepo list
@@ -197,10 +197,10 @@ EXAMPLES
   $ standard-monorepo list 
   --only="name,version,private,location,dependencies,devDependencies,peerDependencies,optionalDependencies"
   $ standard-monorepo list --nodes # Shows all packages and their dependencies in an indexed table
-  $ standard-monorepo list --since=gitsha --only=name,version --no-forkPoint
+  $ standard-monorepo list --since=gitsha --only=name,version --no-fork-point
   $ standard-monorepo list --since=$(git merge-base --fork-point main)
-  $ standard-monorepo list --since=main --forkPoint # same as above
-  $ standard-monorepo list --since=main # same as above as --forkPoint default is true
+  $ standard-monorepo list --since=main --fork-point # same as above
+  $ standard-monorepo list --since=main # same as above as --fork-point default is true
 ```
 
 _See code: [src/commands/list.ts](https://github.com/imflavio/standard-monorepo/blob/v0.4.2/src/commands/list.ts)_

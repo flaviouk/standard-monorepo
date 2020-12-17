@@ -23,7 +23,7 @@ describe('[getCircularDepsMessage]', () => {
     const circDeps = []
     const flags = {
       max: 0,
-      maxTotalPaths: 0,
+      'max-total-paths': 0,
     }
     expect(getCircularDepsMessage(circDeps, flags)).toMatchInlineSnapshot(`
       Object {
@@ -37,7 +37,7 @@ describe('[getCircularDepsMessage]', () => {
     const circDeps = [['foo', 'bar']]
     const flags = {
       max: 0,
-      maxTotalPaths: 0,
+      'max-total-paths': 0,
     }
     expect(getCircularDepsMessage(circDeps, flags)).toMatchInlineSnapshot(`
       Object {
@@ -45,7 +45,7 @@ describe('[getCircularDepsMessage]', () => {
 
       |> Maximum circular dependencies allowed is 0 \\"--max\\", found: 1
 
-      |> Maximum circular dependencies *paths* allowed is 0 \\"--maxTotalPaths\\", found: 2
+      |> Maximum circular dependencies *paths* allowed is 0 \\"--max-total-paths\\", found: 2
 
       #######################################################################
 
@@ -61,7 +61,7 @@ describe('[getCircularDepsMessage]', () => {
     const circDeps = [['foo', 'bar']]
     const flags = {
       max: 1,
-      maxTotalPaths: 55,
+      'max-total-paths': 55,
     }
     expect(getCircularDepsMessage(circDeps, flags)).toMatchInlineSnapshot(`
       Object {
@@ -69,7 +69,7 @@ describe('[getCircularDepsMessage]', () => {
 
       |> Maximum circular dependencies allowed is 1 \\"--max\\", found: 1
 
-      |> Maximum circular dependencies *paths* allowed is 55 \\"--maxTotalPaths\\", found: 2
+      |> Maximum circular dependencies *paths* allowed is 55 \\"--max-total-paths\\", found: 2
 
       #######################################################################
 
@@ -88,7 +88,7 @@ describe('[getCircularDepsMessage]', () => {
     ]
     const flags = {
       max: 1,
-      maxTotalPaths: 55,
+      'max-total-paths': 55,
     }
     expect(getCircularDepsMessage(circDeps, flags)).toMatchInlineSnapshot(`
       Object {
@@ -96,7 +96,7 @@ describe('[getCircularDepsMessage]', () => {
 
       |> Maximum circular dependencies allowed is 1 \\"--max\\", found: 2
 
-      |> Maximum circular dependencies *paths* allowed is 55 \\"--maxTotalPaths\\", found: 5
+      |> Maximum circular dependencies *paths* allowed is 55 \\"--max-total-paths\\", found: 5
 
       #######################################################################
 
@@ -117,7 +117,7 @@ describe('[getCircularDepsMessage]', () => {
     const circDeps = [['foo', 'bar', 'baz', 'a', 'b']]
     const flags = {
       max: 1,
-      maxTotalPaths: 5,
+      'max-total-paths': 5,
     }
     expect(getCircularDepsMessage(circDeps, flags)).toMatchInlineSnapshot(`
       Object {
@@ -125,7 +125,7 @@ describe('[getCircularDepsMessage]', () => {
 
       |> Maximum circular dependencies allowed is 1 \\"--max\\", found: 1
 
-      |> Maximum circular dependencies *paths* allowed is 5 \\"--maxTotalPaths\\", found: 5
+      |> Maximum circular dependencies *paths* allowed is 5 \\"--max-total-paths\\", found: 5
 
       #######################################################################
 
@@ -144,7 +144,7 @@ describe('[getCircularDepsMessage]', () => {
     const circDeps = [['foo', 'bar', 'baz', 'a', 'b', 'c']]
     const flags = {
       max: 1,
-      maxTotalPaths: 5,
+      'max-total-paths': 5,
     }
     expect(getCircularDepsMessage(circDeps, flags)).toMatchInlineSnapshot(`
       Object {
@@ -152,7 +152,7 @@ describe('[getCircularDepsMessage]', () => {
 
       |> Maximum circular dependencies allowed is 1 \\"--max\\", found: 1
 
-      |> Maximum circular dependencies *paths* allowed is 5 \\"--maxTotalPaths\\", found: 6
+      |> Maximum circular dependencies *paths* allowed is 5 \\"--max-total-paths\\", found: 6
 
       #######################################################################
 

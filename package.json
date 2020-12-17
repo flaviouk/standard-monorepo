@@ -13,11 +13,11 @@
     "format:check": "prettier '**/*.{js,jsx,ts,tsx,json,css}' --check",
     "build": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme && rm -f oclif.manifest.json",
     "test": "jest",
-    "version": "oclif-dev readme && git add README.md"
+    "prepare": "yarn build && yarn test"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn build && git add -A",
+      "pre-commit": "oclif-dev readme && git add README.md",
       "commit-msg": "./bin/run commit $HUSKY_GIT_PARAMS"
     }
   },
