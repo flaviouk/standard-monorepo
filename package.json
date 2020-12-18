@@ -11,13 +11,14 @@
   "scripts": {
     "format:all": "prettier '**/*.{js,jsx,ts,tsx,json,css}' --write",
     "format:check": "prettier '**/*.{js,jsx,ts,tsx,json,css}' --check",
-    "build": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme && rm -f oclif.manifest.json",
+    "build": "rm -rf lib && tsc -b",
     "test": "jest",
-    "prepare": "yarn build && yarn test"
+    "update:readme": "oclif-dev manifest && oclif-dev readme && rm -f oclif.manifest.json && git add README.md",
+    "prepublishOnly": "yarn build && yarn test && yarn update:readme"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "oclif-dev readme && git add README.md",
+      "pre-commit": "yarn update:readme",
       "commit-msg": "./bin/run commit $HUSKY_GIT_PARAMS"
     }
   },
@@ -38,6 +39,7 @@
     "@types/jest": "26.0.15",
     "@types/lodash": "4.14.165",
     "@types/node": "10.17.48",
+    "auto": "10.4.2",
     "globby": "11.0.1",
     "husky": "4.3.0",
     "jest": "26.6.3",
