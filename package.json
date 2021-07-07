@@ -38,7 +38,7 @@
     "@types/inquirer": "7.3.1",
     "@types/jest": "26.0.15",
     "@types/lodash": "4.14.165",
-    "@types/node": "10.17.48",
+    "@types/node": "14.17.5",
     "auto": "10.29.2",
     "globby": "11.0.1",
     "husky": "4.3.0",
@@ -81,6 +81,6 @@
     "node": ">=10"
   },
   "volta": {
-    "node": "14.15.1"
+    "node": "14.17.3"
   }
 }
