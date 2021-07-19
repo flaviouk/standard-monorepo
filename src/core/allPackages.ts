@@ -17,6 +17,7 @@ const findByGlob = async (glob: string) =>
         if (err) return reject(err)
         return resolve(
           pkgLocations.map((location) => {
+            if (location.includes('node_modules')) return null
             const {
               name,
               version,
@@ -25,6 +26,7 @@ const findByGlob = async (glob: string) =>
               devDependencies = {},
               peerDependencies = {},
               optionalDependencies = {},
+              ...rest
             } = require(location)
             if (!name) {
               throw Error('All packages must have a name: ' + location)
@@ -41,6 +43,7 @@ const findByGlob = async (glob: string) =>
               devDependencies,
               peerDependencies,
               optionalDependencies,
+              ...rest,
             }
           }),
         )
@@ -58,7 +61,9 @@ const getAllPackages = async (): Promise<Package[]> => {
     Array.isArray(pkg.workspaces) ? pkg.workspaces : pkg.workspaces?.packages,
     [],
   )
-  const packages = flattenDeep(await Promise.all(globs.map(findByGlob)))
+  const packages = flattenDeep(await Promise.all(globs.map(findByGlob))).filter(
+    Boolean,
+  )
 
   const seen = new Map()
 

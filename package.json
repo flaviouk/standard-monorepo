@@ -80,6 +80,9 @@
   "engines": {
     "node": ">=10"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "volta": {
     "node": "14.15.1"
   }
